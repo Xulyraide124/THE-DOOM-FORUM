@@ -11,7 +11,6 @@ Forum web complet développé en Go, seul, dans le cadre d'un projet scolaire Yn
 
 - **Langage** : Go 1.25.5
 - **Base de données** : SQLite
-- **Containerisation** : Docker
 - **Frontend** : HTML/CSS pur (aucun framework)
 - **Auth** : Sessions cookie + OAuth Google
 
@@ -24,7 +23,6 @@ Forum web complet développé en Go, seul, dans le cadre d'un projet scolaire Yn
 - Système de likes et dislikes (posts & commentaires)
 - Filtrage des posts (par catégorie, mes posts, posts likés)
 - Gestion des erreurs HTTP (404, 500...)
-- Containerisation Docker
 
 ### Bonus implémentés
 - 🔐 **OAuth Google** — connexion via compte Google
@@ -37,13 +35,6 @@ Forum web complet développé en Go, seul, dans le cadre d'un projet scolaire Yn
   - Panel d'administration dédié
   - Signalement de contenu
 
-## 🚀 Lancement avec Docker
-
-```bash
-docker-compose up --build
-```
-
-L'application sera disponible sur **http://localhost:8080**
 
 ## 🚀 Lancement sans Docker
 
