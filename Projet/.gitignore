@@ -1,0 +1,16 @@
+# Env
+.env
+
+# Base de données
+Projet/forum.db
+
+# Binaire Go
+Projet/forum
+*.exe
+
+# Uploads utilisateurs
+Projet/web/static/uploads/*
+!Projet/web/static/uploads/.gitkeep
+
+# Go
+Projet/vendor/
