@@ -1,0 +1,11 @@
+{{template "base" .}}
+
+{{define "title"}}Erreur {{.Code}} — The Doom Forum{{end}}
+
+{{define "content"}}
+<div class="auth-container">
+    <h2>Erreur {{.Code}}</h2>
+    <p>{{.Message}}</p>
+    <a href="/" class="btn-primary">Retour à l'accueil</a>
+</div>
+{{end}}

@@ -1,0 +1,51 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{block "title" .}}The Doom Forum{{end}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">💀 THE DOOM FORUM</a>
+            <div class="nav-links">
+                {{if .UserID}}
+                    <a href="/user/{{.Username}}" style="color: var(--text-secondary); font-size: 0.85rem; text-decoration:none;">Salut,
+                        {{if eq .Role "admin"}}
+                            <strong style="color: #e60808;">{{.Username}}</strong>
+                        {{else if eq .Role "moderator"}}
+                            <strong style="color: #1b94c4;">{{.Username}} <span style="font-size:0.7rem">- MODO</span></strong>
+                        {{else}}
+                            <strong style="color: #00aa00;">{{.Username}}</strong>
+                        {{end}}
+                    </a>
+                    <a href="/post/create">+ Nouveau post</a>
+                    <a href="/?filter=my">Mes posts</a>
+                    <a href="/?filter=liked">Mes likes</a>
+                    {{if eq .Role "admin"}}
+                        <a href="/admin" class="btn-admin">⚙️ Admin</a>
+                    {{end}}
+                    <form action="/logout" method="POST" style="display:inline">
+                        <button type="submit">Déconnexion</button>
+                    </form>
+                {{else}}
+                    <a href="/login">Connexion</a>
+                    <a href="/register">Inscription</a>
+                {{end}}
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {{block "content" .}}{{end}}
+    </main>
+
+    <footer>
+        <p>💀 The Doom Forum — 2024</p>
+    </footer>
+</body>
+</html>
+{{end}}

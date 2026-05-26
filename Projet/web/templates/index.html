@@ -1,0 +1,49 @@
+{{template "base" .}}
+
+{{define "title"}}Accueil — The Doom Forum{{end}}
+
+{{define "content"}}
+<div class="container">
+    <aside class="sidebar">
+        <h3>Catégories</h3>
+        <ul>
+            <li><a href="/" class="{{if not .Category}}active{{end}}">Tous les posts</a></li>
+            {{range .Categories}}
+            <li><a href="/?category={{.Name}}" class="{{if eq $.Category .Name}}active{{end}}">{{.Name}}</a></li>
+            {{end}}
+        </ul>
+
+        {{if .UserID}}
+        <h3>Mes filtres</h3>
+        <ul>
+            <li><a href="/?filter=my" class="{{if eq .Filter `my`}}active{{end}}">Mes posts</a></li>
+            <li><a href="/?filter=liked" class="{{if eq .Filter `liked`}}active{{end}}">Posts likés</a></li>
+        </ul>
+        {{end}}
+    </aside>
+
+    <section class="posts">
+        <h2>Posts récents</h2>
+        {{if not .Posts}}
+            <p class="empty">Aucun post pour l'instant. Sois le premier !</p>
+        {{end}}
+        {{range .Posts}}
+        <article class="post-card">
+            <div class="post-header">
+                <h3><a href="/post/{{.ID}}">{{.Title}}</a></h3>
+                <span class="meta">par {{.Username}} — {{.CreatedAt.Format "02/01/2006 15:04"}}</span>
+            </div>
+            <p class="post-excerpt">{{slice .Content 0 (min (len .Content) 200)}}...</p>
+            <div class="post-footer">
+                <div class="categories">
+                    {{range .Categories}}<span class="tag">{{.}}</span>{{end}}
+                </div>
+                <div class="likes">
+                    👍 {{.Likes}} &nbsp; 👎 {{.Dislikes}}
+                </div>
+            </div>
+        </article>
+        {{end}}
+    </section>
+</div>
+{{end}}

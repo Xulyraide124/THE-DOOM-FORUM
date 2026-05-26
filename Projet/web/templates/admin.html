@@ -1,0 +1,116 @@
+{{template "base" .}}
+
+{{define "title"}}Panel Admin — The Doom Forum{{end}}
+
+{{define "content"}}
+<div style="max-width: 1100px; margin: 0 auto;">
+    <h2 style="color: var(--red); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem;">⚙️ Panel d'administration</h2>
+
+    <!-- Signalements -->
+    <section class="admin-section">
+        <h3>🚨 Signalements ({{len .Reports}})</h3>
+        {{if not .Reports}}
+            <p class="empty">Aucun signalement pour l'instant.</p>
+        {{else}}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Signalé par</th>
+                    <th>Type</th>
+                    <th>Raison</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Reports}}
+                <tr>
+                    <td>{{.Reporter}}</td>
+                    <td>{{.TargetType}}</td>
+                    <td>{{.Reason}}</td>
+                    <td>{{.CreatedAt}}</td>
+                    <td>
+                        <form action="/moderate/delete" method="POST" style="display:inline">
+                            <input type="hidden" name="target_id" value="{{.TargetID}}">
+                            <input type="hidden" name="target_type" value="{{.TargetType}}">
+                            <input type="hidden" name="redirect" value="/admin">
+                            <button type="submit" class="btn-danger" onclick="return confirm('Supprimer ce contenu ?')">🗑 Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        {{end}}
+    </section>
+
+    <!-- Gestion des utilisateurs -->
+    <section class="admin-section">
+        <h3>👥 Utilisateurs ({{len .Users}})</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Inscrit le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Users}}
+                <tr>
+                    <td><strong>{{.Username}}</strong></td>
+                    <td>{{.Email}}</td>
+                    <td>
+                        <span class="role-badge role-{{.Role}}">{{.Role}}</span>
+                    </td>
+                    <td>{{.CreatedAt}}</td>
+                   <td>
+                        {{if eq .Role "user"}}
+                        <form action="/admin/promote" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-promote">⬆️ Modo</button>
+                        </form>
+                        {{if eq .Muted 0}}
+                        <form action="/admin/mute" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-danger">🔇 Mute</button>
+                        </form>
+                        {{else}}
+                        <form action="/admin/unmute" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-promote">🔊 Unmute</button>
+                        </form>
+                        {{end}}
+                        <form action="/admin/delete-user" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-danger" onclick="return confirm('Supprimer cet utilisateur ?')">🗑 Suppr</button>
+                        </form>
+                        {{else if eq .Role "moderator"}}
+                        <form action="/admin/demote" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-demote">⬇️ Rétrograder</button>
+                        </form>
+                        {{if eq .Muted 0}}
+                        <form action="/admin/mute" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-danger">🔇 Mute</button>
+                        </form>
+                        {{else}}
+                        <form action="/admin/unmute" method="POST" style="display:inline">
+                            <input type="hidden" name="user_id" value="{{.ID}}">
+                            <button type="submit" class="btn-promote">🔊 Unmute</button>
+                        </form>
+                        {{end}}
+                        {{else if eq .Role "admin"}}
+                        <span class="role-badge role-admin">👑 Admin</span>
+                        {{end}}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </section>
+</div>
+{{end}}
